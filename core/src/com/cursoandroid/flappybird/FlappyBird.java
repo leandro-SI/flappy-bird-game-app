@@ -10,7 +10,17 @@ public class FlappyBird extends ApplicationAdapter {
 
 	// classe para criar animações
 	private SpriteBatch batch;
-	private Texture passaro;
+	private Texture[] passaros;
+	private Texture fundo;
+
+	// Atributos de COnfiguração
+	private int movimento = 0;
+	private int larguraDispositivo;
+	private int alturaDispositivo;
+
+	private float variacao = 0;
+	private float velocidadeQueda = 0;
+	private float posicaoInicialVertical;
 
 	
 	@Override
@@ -18,18 +28,43 @@ public class FlappyBird extends ApplicationAdapter {
 
 		// instancia para manipular as imagens
 		batch = new SpriteBatch();
+		//passaro = new Texture("passaro1.png");
+		passaros = new Texture[3];
+		passaros[0] = new Texture("passaro1.png");
+		passaros[1] = new Texture("passaro2.png");
+		passaros[2] = new Texture("passaro3.png");
 
-		passaro = new Texture("passaro1.png");
+		fundo = new Texture("fundo.png");
+
+        larguraDispositivo = Gdx.graphics.getWidth();
+        alturaDispositivo = Gdx.graphics.getHeight();
+		posicaoInicialVertical = alturaDispositivo / 2;
 
 	}
 
 	@Override
 	public void render () {
 
+		//variacao += 0.1;
+		// Diminuir variacao dos movimentos
+		variacao += Gdx.graphics.getDeltaTime() * 3;
+		//velocidadeQueda++;
+		velocidadeQueda += Gdx.graphics.getDeltaTime() * 5;
+
+		if(variacao > 2){
+			variacao = 0;
+		}
+
+		if(posicaoInicialVertical > 0){
+			posicaoInicialVertical -= velocidadeQueda;
+		}
+		
 		// iniciar exibição das imagens
 		batch.begin();
 
-		batch.draw(passaro,0,0);
+		batch.draw(fundo, 0,0, larguraDispositivo, alturaDispositivo);
+		batch.draw(passaros[(int)variacao],30,posicaoInicialVertical);
+		movimento++;
 
 		batch.end();
 	}
