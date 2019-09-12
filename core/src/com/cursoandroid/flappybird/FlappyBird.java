@@ -7,27 +7,31 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class FlappyBird extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+
+	// classe para criar animações
+	private SpriteBatch batch;
+	private Texture passaro;
+
 	
 	@Override
 	public void create () {
+
+		// instancia para manipular as imagens
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+
+		passaro = new Texture("passaro1.png");
+
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		// iniciar exibição das imagens
 		batch.begin();
-		batch.draw(img, 0, 0);
+
+		batch.draw(passaro,0,0);
+
 		batch.end();
 	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
-	}
+
 }
