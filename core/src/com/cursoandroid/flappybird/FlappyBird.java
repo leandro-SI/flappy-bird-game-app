@@ -48,17 +48,24 @@ public class FlappyBird extends ApplicationAdapter {
 		//variacao += 0.1;
 		// Diminuir variacao dos movimentos
 		variacao += Gdx.graphics.getDeltaTime() * 3;
-		//velocidadeQueda++;
-		velocidadeQueda += Gdx.graphics.getDeltaTime() * 5;
+		velocidadeQueda++;
+		//velocidadeQueda += Gdx.graphics.getDeltaTime() * 5;
 
 		if(variacao > 2){
 			variacao = 0;
 		}
 
-		if(posicaoInicialVertical > 0){
+
+		// ver se a tela foi tocada para movimentar o passaro
+		if(Gdx.input.justTouched()){
+            //Gdx.app.log("Toque", "Toque na tela");
+			velocidadeQueda = -20;
+        }
+
+		if(posicaoInicialVertical > 0 || velocidadeQueda < 0){
 			posicaoInicialVertical -= velocidadeQueda;
 		}
-		
+
 		// iniciar exibição das imagens
 		batch.begin();
 
