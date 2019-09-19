@@ -7,6 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
+
+import org.omg.PortableInterceptor.Interceptor;
 
 import java.util.Random;
 
@@ -20,6 +26,11 @@ public class FlappyBird extends ApplicationAdapter {
 	private Texture canoBaixo;
 	private Random numeroRandomico;
 	private BitmapFont fonte;
+	private Circle passaroCirculo;
+	private Rectangle retanguloCanoTopo;
+	private Rectangle retanguloCanoBaixo;
+	// desenha na tela as formas
+	private ShapeRenderer shape; // USAR O SHAPE SOMENTE PARA DESENHAR FORMAS PARA TESTES
 
 	// Atributos de COnfiguração
 	private int movimento = 0;
@@ -44,6 +55,13 @@ public class FlappyBird extends ApplicationAdapter {
 		numeroRandomico = new Random();
 
 		fonte = new BitmapFont();
+
+		passaroCirculo = new Circle();
+		retanguloCanoTopo = new Rectangle();
+		retanguloCanoBaixo = new Rectangle();
+		//shape = new ShapeRenderer();
+
+
 		fonte.setColor(Color.WHITE);
 		fonte.getData().setScale(6);
 
@@ -137,8 +155,35 @@ public class FlappyBird extends ApplicationAdapter {
 		batch.draw(passaros[(int)variacao],120,posicaoInicialVertical);
 		fonte.draw(batch, String.valueOf(pontuacao), larguraDispositivo / 2, alturaDispositivo - 50);
 		movimento++;
-
 		batch.end();
+
+		// criado forma passaro
+		passaroCirculo.set(120 + passaros[0].getWidth() / 2, posicaoInicialVertical + passaros[0].getHeight() / 2, 30 + passaros[0].getWidth() / 2);
+
+		// criando forma canobaixo
+		retanguloCanoBaixo = new Rectangle(
+				posicaoMovimentoCanoHorizontal, alturaDispositivo / 2 - canoBaixo.getHeight() - espacoEntreCanos / 2 + alturaEntreCanosRandomica,
+				canoBaixo.getWidth(), canoBaixo.getHeight()
+		);
+
+		// criando forma canotopo
+		retanguloCanoTopo = new Rectangle(
+				posicaoMovimentoCanoHorizontal, alturaDispositivo / 2 + espacoEntreCanos / 2 + alturaEntreCanosRandomica,
+				canoTopo.getWidth(), canoTopo.getHeight()
+		);
+
+		//Desenha as formas
+		/*shape.begin(ShapeRenderer.ShapeType.Filled);
+		shape.circle(passaroCirculo.x, passaroCirculo.y, passaroCirculo.radius);
+		shape.rect(retanguloCanoBaixo.x, retanguloCanoBaixo.y, retanguloCanoBaixo.width, retanguloCanoBaixo.height);
+		shape.rect(retanguloCanoTopo.x, retanguloCanoTopo.y, retanguloCanoTopo.width, retanguloCanoTopo.height);
+		shape.setColor(Color.RED);
+		shape.end(); */
+
+		// teste de colisao entre as formas
+        if(Intersector.overlaps(passaroCirculo, retanguloCanoBaixo) || Intersector.overlaps(passaroCirculo, retanguloCanoTopo)){
+            Gdx.app.log("colisao", "Houve uma colisao");
+        }
 	}
 
 }
